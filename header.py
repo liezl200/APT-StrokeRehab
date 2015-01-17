@@ -8,7 +8,7 @@ header = '''
     </div>
     <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
       <ul class="nav navbar-nav" >
-        <li><a href="/dashboard">DASHBOARD</a></li>
+        <<PATIENT/THERAPIST>>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/Logout">LOGOUT</a></li>
@@ -18,13 +18,25 @@ header = '''
 </header>
 '''
 
+patientHeader = '''
+<li><a href="/progress">PROGRESS</a></li>
+<li><a href="/exercises">EXERCISES</a></li>
+'''
+
+therapistHeader = '''
+<li><a href="/dashboard">DASHBOARD</a></li>
+'''
 
 footer = '''
 <script src="/static/bootstrap.min.js"></script>
 '''
 
-def getHeader(pageRoute="/"):
-  return header
+def getHeader(isPatient):
+  if isPatient:
+    return string.replace(header, "<<PATIENT/THERAPIST>>", patientHeader)
+  else:
+    return string.replace(header, "<<PATIENT/THERAPIST>>", therapistHeader)
+
 
 def getFooter(pageRoute="/"):
   return footer

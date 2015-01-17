@@ -35,13 +35,16 @@ class LogoutHandler(webapp2.RequestHandler):
     self.redirect(logouturl)
     logging.info(logouturl)
 
+# Therapist-use only
 class DashboardHandler(webapp2.RequestHandler):
 	def get(self):
-		renderedHeader = header.getHeader('/')
+		query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+		currUser = query.fetch()
+		#if currUser == "Patient": TODO -- prevent unauthorized access
+		renderedHeader = header.getHeader(currUser == "Patient")
 		template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = jinja_environment.get_template('dashboard.html')
     self.response.out.write(template.render(template_values))
-
 
 jinja_environment = jinja2.Environment(loader=
   jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -50,8 +53,8 @@ app = webapp2.WSGIApplication([
   ('/', MainHandler),
   ('/Logout', LogoutHandler),
   ('/Login', LoginHandler),
-  ('/dashboard', DashboardHandler),
-  ('/exercises', ex.ExerciseHandler),
-  ('/progress', ex.ProgressHandler),
-  ('/createTrack', ex.TrackHandler),
+  ('/exercises', ex.ExercisesHandler), # patient
+  ('/progress', ex.ProgressHandler), # patient + therapist (direct access through patient userID)
+  ('/createTrack', ex.TrackHandler), # therapist
+  ('/dashboard', DashboardHandler), # therapist
 ], debug=True)
