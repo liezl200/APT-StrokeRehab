@@ -31,12 +31,13 @@ footer = '''
 <script src="/static/bootstrap.min.js"></script>
 '''
 
-def getHeader(isPatient):
-  if isPatient:
-    return string.replace(header, "<<PATIENT/THERAPIST>>", patientHeader)
+def getHeader(userType):
+  if userType == "Patient":
+    return header.replace("<<PATIENT/THERAPIST>>", patientHeader)
+  elif userType == "Therapist":
+    return header.replace("<<PATIENT/THERAPIST>>", therapistHeader)
   else:
-    return string.replace(header, "<<PATIENT/THERAPIST>>", therapistHeader)
-
+    return header.replace("<<PATIENT/THERAPIST>>", "")
 
 def getFooter(pageRoute="/"):
   return footer

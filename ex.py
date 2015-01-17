@@ -6,22 +6,22 @@ import datetime
 import urllib
 
 class ExercisesHandler(webapp2.RequestHandler):
-	def get(self):
-		renderedHeader = header.getHeader(currUser == "Patient")
-		template_values = {"header": renderedHeader, "footer":header.getFooter()}
+  def get(self):
+    renderedHeader = header.getHeader(users.get_current_user().user_id())
+    template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = jinja_environment.get_template('exercises.html')
     self.response.out.write(template.render(template_values))
 
 class ProgressHandler(webapp2.RequestHandler):
-	def get(self):
-		renderedHeader = header.getHeader(currUser == "Patient")
-		template_values = {"header": renderedHeader, "footer":header.getFooter()}
-    template = jinja_environment.get_template('exercises.html')
+  def get(self):
+    renderedHeader = header.getHeader(users.get_current_user().user_id())
+    template_values = {"header": renderedHeader, "footer":header.getFooter()}
+    template = jinja_environment.get_template('progress.html')
     self.response.out.write(template.render(template_values))
 
 class TrackHandler(webapp2.RequestHandler):
-	def get(self):
-		renderedHeader = header.getHeader(currUser == "Patient")
-		template_values = {"header": renderedHeader, "footer":header.getFooter()}
-    template = jinja_environment.get_template('exercises.html')
+  def get(self):
+    renderedHeader = header.getHeader(users.get_current_user().user_id())
+    template_values = {"header": renderedHeader, "footer":header.getFooter()}
+    template = jinja_environment.get_template('createTrack.html')
     self.response.out.write(template.render(template_values))

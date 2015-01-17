@@ -13,11 +13,13 @@ import webapp2
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
-    renderedHeader = header.getHeader('/')
     if(users.get_current_user() == None):
+      renderedHeader = header.getHeader("None")
       renderedHeader = renderedHeader.replace('<li><a href="/settings">SETTINGS</a></li>', '')
       renderedHeader = renderedHeader.replace('Logout', 'Login')
       renderedHeader = renderedHeader.replace('LOGOUT', 'LOGIN')
+    else:
+      renderedHeader = header.getHeader(users.get_current_user().user_id())
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template_values['randomImg'] = "/static/201.jpg"
     template = jinja_environment.get_template('home.html')
@@ -37,12 +39,12 @@ class LogoutHandler(webapp2.RequestHandler):
 
 # Therapist-use only
 class DashboardHandler(webapp2.RequestHandler):
-	def get(self):
-		query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
-		currUser = query.fetch()
-		#if currUser == "Patient": TODO -- prevent unauthorized access
-		renderedHeader = header.getHeader(currUser == "Patient")
-		template_values = {"header": renderedHeader, "footer":header.getFooter()}
+  def get(self):
+    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    currUser = query.fetch()
+    #if currUser == "Patient": TODO -- prevent unauthorized access
+    renderedHeader = header.getHeader(currUser == "Patient")
+    template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = jinja_environment.get_template('dashboard.html')
     self.response.out.write(template.render(template_values))
 
