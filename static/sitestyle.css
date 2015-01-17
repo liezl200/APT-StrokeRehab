@@ -1,0 +1,63 @@
+@font-face {
+    font-family: Lato-Light;
+    src: url(Lato-Light.ttf) format('truetype');
+}
+@font-face {
+    font-family: Lato-Regular;
+    src: url(Lato-Regular.ttf) format('truetype');
+}
+@font-face {
+    font-family: Raleway-Light;
+    src: url(Raleway-Light.ttf) format('truetype');
+}
+@font-face {
+    font-family: Raleway-Regular;
+    src: url(Raleway-Regular.ttf) format('truetype');
+}
+body {
+  font-family: Raleway-Regular;
+}
+h2 {
+  font-family: Raleway-Regular !important;
+}
+
+p{
+  margin-left: 20px;
+}
+.navbar{
+  font-family: Lato-Regular;
+  border: 0px;
+}
+.navbar a{
+  color:white;
+  -o-transition: .5s;
+  -ms-transition: .5s;
+  -moz-transition: .5s;
+  -webkit-transition: .5s;
+  transition: .5s;
+
+}
+.navbar a:hover{
+  color:black;
+}
+.navbar-header{
+  font-family: Lato-Light;
+}
+#splashText{
+  font-family: Raleway-Regular;
+}
+
+.content-wrapper{
+  min-height:100%;
+  height: auto !important;
+  height: 100%;
+  border-bottom: 2px;
+  border-color: #333;
+}
+.bs-docs-footer, .push{
+  height: 290px;
+}
+.bs-docs-footer{
+  border-top: 2px solid #333;
+  background-color: #DDD;
+}

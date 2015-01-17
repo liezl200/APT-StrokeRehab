@@ -1,0 +1,60 @@
+<html>
+<head>
+
+  <title>APT</title>
+  <link rel="icon" type="image/png" href="static/favicon.png"/>
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/sitestyle.css">
+  <script src="/static/jquery-1.11.1.min.js"></script>
+  <style>
+    .splash{
+      background:url({{randomImg}}) no-repeat center top;
+      margin-top: -80px;
+      padding-top: 20px;
+      text-align: center;
+      background-attachment: relative;
+      background-position: center center;
+      min-height: 500px;
+      width: 100%;
+      -webkit-background-size: 100%;
+      -moz-background-size: 100%;
+      -o-background-size: 100%;
+      background-size: 100%;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    #splashText{
+      padding-top: 100px;
+      opacity:1.0;
+    }
+  </style>
+</head>
+<body>
+  {{header}}
+  <div class="splash">
+    <div class="container" style="text-shadow: 1px 1px #ffffff">
+      <h1 id="splashText">Automatic Physical Therapy</h1>
+    </div>
+  </div>
+  <div class="container bs-docs-container">
+  <div class="bs-docs-section">
+
+    <h2>How to use APT</h2>
+      <ul>
+        <li>stuff</li>
+        <li>more stuff</li>
+      </ul>
+      <p>yay</p>
+      <ol>
+        <li><a href="/Login">Sign in</a> using your google account</li>
+      </ol>
+    <h3>Created by: Calla, John, Ali, and Liezl</h3>
+    </br></br></br></br></br></br>
+  </div>
+  </div>
+  {{footer}}
+
+</body>
+</html>

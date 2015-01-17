@@ -1,0 +1,35 @@
+application: apt-strokerehab
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+- url: /
+  script: main.app
+- url: /Login
+  script: main.app
+- url: /.*
+  script: main.app
+  login: required
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+
+handlers:
+- url: /static/(.*\.ttf)
+  static_files: static/\1
+  upload: static/(.*\.ttf)
+  mime_type: application/x-font-ttf
+
+- url: /static
+  static_dir: static
+
+builtins:
+- remote_api: on
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: jinja2
+  version: latest
