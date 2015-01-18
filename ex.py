@@ -11,8 +11,8 @@ class Movement(ndb.Model):
 
 class ExerciseTrack(ndb.Model):
   timestamp = ndb.DateTimeProperty(required=True)
-  ETID = ndb.StringProperty(required=True)
-  pass
+  user = ndb.UserProperty(required=True)
+  exProgram = nbd.StringProperty(repeated=True)
   #TODO: IMPLEMENT WITH LISTS -- exercise list
 
 class Result(ndb.Model):
@@ -31,13 +31,13 @@ class ExercisesHandler(webapp2.RequestHandler):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
     currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
-    template_values = {"header": renderedHeader, "footer":header.getFooter()}
+    template_values = {"header": renderedHeader, "footer": header.getFooter()}
     template = main.jinja_environment.get_template('exercises.html')
     self.response.out.write(template.render(template_values))
 
 class ProgressHandler(webapp2.RequestHandler):
   def get(self):
-    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.user == users.get_current_user())
     currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
@@ -49,9 +49,30 @@ jinja_environment = jinja2.Environment(loader=
 
 class TrackHandler(webapp2.RequestHandler):
   def get(self):
-    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.user == users.get_current_user())
     currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = main.jinja_environment.get_template('createTrack.html')
     self.response.out.write(template.render(template_values))
+
+class IntermHandler(webapp2.RequestHandler):
+  def get(self):
+    query = PTUser.query().filter(PTUser.user == users.get_current_user())
+    currUser = query.fetch()[0]
+    renderedHeader = header.getHeader(currUser.PTType)
+    #get and enter exercise plan into data base
+    activities = self.request.get('activities')
+
+    #turn activities into an array
+    exprog = activities.split(',')
+
+    #add to user's history of exercise programs
+    new_plan = ExerciseTrack(timestamp = datetime.datetime.now(), user = users.get_current_user(),
+                              exProgram = exprog)
+    new_plan.put()
+
+    template_values = {"header": renderedHeader, "footer":header.getFooter(), "planVals": exprog}
+    template = main.jinja_environment.get_template('interm.html')
+    self.response.out.write(template.render(template_values))
+

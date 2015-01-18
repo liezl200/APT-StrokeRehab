@@ -98,4 +98,5 @@ app = webapp2.WSGIApplication([
   ('/dashboard', DashboardHandler), # therapist
   ('/settings', SettingsHandler), #patient + therapist
   ('/settingsUpdate', SettingsUpdateHandler), #patient + therapist
+  ('/newPlan', ex.IntermHandler), #intermediate page displaying new plan
 ], debug=True)
