@@ -32,6 +32,12 @@ class ExercisesHandler(webapp2.RequestHandler):
     currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer": header.getFooter()}
+
+    etQuery = ExerciseTrack.query().filter(currUser.user == ExerciseTrack.user)
+    etQuery.order('-date')
+    program = etQuery.fetch()[0].exProgram
+    #TODO: parse and send program to javascript
+
     template = main.jinja_environment.get_template('exercises.html')
     self.response.out.write(template.render(template_values))
 
