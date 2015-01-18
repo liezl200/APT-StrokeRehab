@@ -52,18 +52,17 @@ homeHeader = '''
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li class="hidden">
+                
+                
+                <<PATIENT/THERAPIST>>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            <li class="hidden">
                     <a class="page-scroll" href="#page-top"></a>
                 </li>
                 <li>
                     <a class="page-scroll" href="#about">ABOUT</a>
                 </li>
-                <li>
-                    <a class="page-scroll" href="#contact">CONTACT</a>
-                </li>
-                <<PATIENT/THERAPIST>>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
               <li><a href="/settings">SETTINGS</a></li>
               <li><a href="/Logout">LOGOUT</a></li>
             </ul>
