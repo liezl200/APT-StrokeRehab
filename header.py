@@ -11,7 +11,7 @@ header = '''
               <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand page-scroll" href="/">
-          Relay</a>
+          Automated Physical Therapy</a>
       </div>
       <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav" >
@@ -21,9 +21,6 @@ header = '''
         <<PATIENT/THERAPIST>>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-              <li>
-          <a href="/exercises">EXERCISES</a>
-      </li>
         <li><a href="/settings">SETTINGS</a></li>
         <li><a href="/Logout">LOGOUT</a></li>
       </ul>
@@ -46,26 +43,20 @@ homeHeader = '''
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand page-scroll" href="#page-top">
-            Relay</a>
+            Automatic Physical Therapy</a>
         </div>
-
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                
-                
-                <<PATIENT/THERAPIST>>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-            <li class="hidden">
+                <li class="hidden">
                     <a class="page-scroll" href="#page-top"></a>
                 </li>
                 <li>
                     <a class="page-scroll" href="#about">ABOUT</a>
                 </li>
-                <li>
-                    <a href="/exercises">EXERCISES</a>
-                </li>
+                <<PATIENT/THERAPIST>>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
               <li><a href="/settings">SETTINGS</a></li>
               <li><a href="/Logout">LOGOUT</a></li>
             </ul>

@@ -34,8 +34,13 @@ class ExercisesHandler(webapp2.RequestHandler):
     template_values = {"header": renderedHeader, "footer": header.getFooter()}
 
     etQuery = ExerciseTrack.query().filter(currUser.user == ExerciseTrack.user)
-    etQuery.order('-date')
-    program = etQuery.fetch()[0].exProgram
+    etQuery.order(ExerciseTrack.timestamp)
+    program = etQuery.fetch()
+    if not program:
+      template_values['numProgs'] = 0
+    else:
+      template_values['program'] = program[0].exProgram
+
     #TODO: parse and send program to javascript
 
     template = main.jinja_environment.get_template('exercises.html')
@@ -53,6 +58,7 @@ class ProgressHandler(webapp2.RequestHandler):
       patientID = users.get_current_user().user_id()
     template_values["pid"] = patientID
     logging.info(patientID)
+
     #TODO: load data specific for this patient ID from the results datastore model
 
     template = main.jinja_environment.get_template('progress.html')

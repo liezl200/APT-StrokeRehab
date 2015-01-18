@@ -10,37 +10,17 @@
 </head>
 <body>
   {{header}}
-
   <br><br><br>
   <div class="container bs-docs-container">
   <div class="bs-docs-section">
-    <div style="text-align:center;">
-        <div>
-            <input type="button" class="myButton" onclick="addFist()" value="Fist">
-            <input type="button" class="myButton" onclick="addFingersSpread()" value="Fingers">
-            <input type="button" class="myButton" onclick="addWaveOut()" value="Wave">
-        </div>
-        <input type="button" class="begin" onclick="postIt()" value="Begin" color="green">
+    {% if num_patients > 0 %}
+      {% for p in patients %}
+      <h1>{{p.user.email()}}</h1>
+      <a href="/progress?pid={{p.user.user_id()}}">View Progress</a><br>
+      <a href="/createTrack?pid={{p.user.user_id()}}">Create New Exercise Plan</a>
+      {% endfor %}
+    {% endif %}
 
-    </div>
-
-    <script type="text/javascript">
-      var exercises = "";
-
-        function addFist() {
-            exercises += "fist,";
-            console.log("Fist.")
-        }
-        function addFingersSpread() {
-            exercises += "fingers_spread,";
-        }
-        function addWaveOut() {
-            exercises += "wave_out,";
-        }
-        function postIt() {
-          window.open("/newPlan?pid={{pid}}&activities=" + exercises, "_self");
-        }
-  </script>
   </div>
   </div>
   <br><br><br><br>
