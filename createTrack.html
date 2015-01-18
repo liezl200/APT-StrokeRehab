@@ -11,7 +11,7 @@
 <body>
   {{header}}
 
-
+  <br><br><br>
   <div class="container bs-docs-container">
   <div class="bs-docs-section">
     <div style="text-align:center;">
@@ -38,7 +38,7 @@
             exercises += "wave_out,";
         }
         function postIt() {
-          window.open("/newPlan?activities=" + exercises, "_self");
+          window.open("/newPlan?pid={{pid}}&activities=" + exercises, "_self");
         }
   </script>
   </div>

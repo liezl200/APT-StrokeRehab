@@ -28,7 +28,7 @@ class PTUser(ndb.Model):
 
 class ExercisesHandler(webapp2.RequestHandler):
   def get(self):
-    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.user == users.get_current_user())
     currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer": header.getFooter()}
@@ -41,6 +41,12 @@ class ProgressHandler(webapp2.RequestHandler):
     currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
+
+    patientID = self.request.get('pid')
+    template_values["pid"] = pid
+
+    #TODO: load data specific for this patient ID from the results datastore model
+
     template = main.jinja_environment.get_template('progress.html')
     self.response.out.write(template.render(template_values))
 
@@ -53,7 +59,11 @@ class TrackHandler(webapp2.RequestHandler):
     currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
+
+    patientID = self.request.get('pid')
+    template_values["pid"] = patientID
     template = main.jinja_environment.get_template('createTrack.html')
+
     self.response.out.write(template.render(template_values))
 
 class IntermHandler(webapp2.RequestHandler):
@@ -63,6 +73,7 @@ class IntermHandler(webapp2.RequestHandler):
     renderedHeader = header.getHeader(currUser.PTType)
     #get and enter exercise plan into data base
     activities = self.request.get('activities')
+    patientID = self.request.get('pid') #TODO : do something with patientID
 
     #turn activities into an array
     exprog = activities.split(',')

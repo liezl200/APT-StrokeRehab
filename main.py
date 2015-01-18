@@ -54,6 +54,10 @@ class DashboardHandler(webapp2.RequestHandler):
       renderedHeader = header.getHeader(currUser.PTType)
     #if currUser == "Patient": TODO -- prevent unauthorized access
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
+    pQuery = PTUser.query().filter(PTUser.therapist == users.get_current_user())
+    patients = pQuery.fetch()
+    template_values['patients'] = patients
+    template_values['num_patients'] = len(patients)
     template = jinja_environment.get_template('dashboard.html')
     self.response.out.write(template.render(template_values))
 
@@ -96,10 +100,17 @@ class SettingsUpdateHandler(webapp2.RequestHandler):
 
     logging.info(p)
     p.put()
-    self.redirect('/dashboard')
-    # template_values = {'header': header.getHeader(userrole), 'footer': header.getFooter()}
-    # template = main.jinja_environment.get_template('settings.html')
-    # self.response.out.write(template.render(template_values))
+
+    renderedHeader = header.getHeader(userrole)
+
+    allTherapistsQ = PTUser.query().filter(PTUser.PTType == "Therapist")
+    allTherapists = allTherapistsQ.fetch()
+    logging.info(allTherapists)
+    template_values = {"header": renderedHeader, "footer":header.getFooter(), "therapists":allTherapists, "currEmail":users.get_current_user().email()}
+
+    #template_values = {'header': header.getHeader(userrole), 'footer': header.getFooter()}
+    template = main.jinja_environment.get_template('settings.html')
+    self.response.out.write(template.render(template_values))
 
 jinja_environment = jinja2.Environment(loader=
   jinja2.FileSystemLoader(os.path.dirname(__file__)))
