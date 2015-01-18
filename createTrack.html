@@ -1,56 +1,205 @@
 <html>
-<head>
+        <head>
+            <script src="/static/jquery-1.11.1.min.js"></script>
+            <link rel="icon" type="image/png" href="static/favicon.png"/>
+            <link rel="stylesheet" href="/static/bootstrap.min.css">
+            <link rel="stylesheet" href="/static/sitestyle.css">
+            <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
+            <link rel="stylesheet" href="/static/sitestyle.css">
+            <script src='/static/myo.js'></script>
+            <script src='/static/myo.experimental.js'></script>
+            <link href='http://fonts.googleapis.com/css?family=Poiret+One|Muli&effect=3d|emboss' rel='stylesheet' type='text/css'>
+            <title>Myo Hand Gesture Exercises</title>
+        </head>
+      <style>
+      body {
+        padding-top: 50;
+      }
+      </style>
+    <body>
+    {{header}}
+        <div id='log'></div>
 
-  <title>Relay</title>
-  <link rel="icon" type="image/png" href="static/favicon.png"/>
-  <link rel="stylesheet" href="/static/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/sitestyle.css">
-  <script src="/static/jquery-1.11.1.min.js"></script>
+        <font color='GhostWhite'>
+            <h2 class="font-effect-3d" style="font-size:70px">Myo Hand Gesture Exercises</h2>
+            <h3 class="intro" id="instructions">Select the hand exercises you would like the patient to perform:</h3>
+        </font>
 
-</head>
-<body>
-  {{header}}
-
-  <br><br><br>
-  <div class="container bs-docs-container">
-  <div class="bs-docs-section">
-    <div style="text-align:center;">
-        <div>
-            <input type="button" class="btn btn-default" onclick="addFist()" value="Fist">
-            <input type="button" class="btn btn-default" onclick="addFingersSpread()" value="Fingers">
-            <input type="button" class="btn btn-default" onclick="addWaveOut()" value="Wave">
+        <div style="text-align:center;">
+            <div>
+                <input type="button" class="myButton" onclick="addFist()" value="Fist">
+                <input type="button" class="myButton" onclick="addFingersSpread()" value="Fingers">
+                <input type="button" class="myButton" onclick="addWaveOut()" value="Wave Out">
+                <input type="button" class="myButton" onclick="addWaveIn()" value="Wave In">
+                <input type="button" class="myButton" onclick="addRotateLeft()" value="Rotate Left">
+                <input type="button" class="myButton" onclick="addRotateRight()" value="Rotate Right">
+            </div>
+               
+            <input type="button" class="begin" onclick="read()" value="Begin">
         </div>
-        <br>
-        <input type="button" class="btn btn-default" onclick="postIt()" value="Begin" color="green">
 
+        <p style="color: #FAFAFA; font-family: Sansserif; font-size:45px" id="myResults"></p>
 
+        <div id="content"><span></span></div>
 
-    </div>
+        <p  class="font-effect-emboss" style="font-size: 45px" id='demo'></p>
+    </body>
+    
 
-    <script type="text/javascript">
-      var exercises = "";
+    <style>
+           li.capitalize {text-transform:capitalize;}
+           body {text-align: center;}
+           ul {list-style-type: none;}
+           body{background-image: url(/static/gp.jpg); background-size: 100%}
+           a:hover{color: #00FFF3;}
+
+           .intro {
+            color:#FAFAFA;
+            font-family:sans-serif;
+            font-size: 40px;
+            transition: transform 1s;
+           }
+
+            .myButton, .begin {
+                background: #428BCA;
+                color: #fff;
+                font-family: Sans-serif;
+                font-size: 20px;
+                height: 60px;
+                width: 150px;
+                line-height: 60px;
+                margin: 25px 25px;
+                text-align: center;
+                border: 0;
+                transition: all 0.3s ease 0s;
+                opacity: 1;
+                top: 50%;
+
+            }
+            .myButton:hover {
+                background: #3071A9
+            }
+            .begin:hover {
+                background: #66CC00;
+            }
+            .myButton:active, .begin:active {
+                position:relative;
+                top:1px;
+            }
+
+        }
+    </style>
+
+    <script>
+        /*myMyo.on('fingers_spread', function(edge){
+            if(!edge) return;
+            alert('Hello Myo!');
+            myMyo.vibrate();
+        });
+
+        myMyo.on('fist', function(edge){
+            //Edge is true if it's the start of the pose, false if it's the end of the pose
+            if(edge){
+                enemies.crush();
+            }
+        });
+
+        myMyo.on('gyroscope', function(data){
+            if(data.x > 100){
+                alert('Woah now!')
+            }
+        });*/
+
+        var myMyo = Myo.create();
+        alert("Welcome!");
+        myMyo.setLockingPolicy("none");
+        var encouragement = ["Awesome Job!", "Solid!","Keep It Up!", "Way to Go!", "Perfect!"];
+        var exercises = "Instructions: ";
 
         function addFist() {
-            exercises += "fist,";
-
+            exercises += "Fist ";
+            document.getElementById("myResults").innerHTML = exercises;
         }
         function addFingersSpread() {
-            exercises += "fingers_spread,";
-
+            exercises += "FingersSpread ";
+            document.getElementById("myResults").innerHTML = exercises;
         }
         function addWaveOut() {
-            exercises += "wave_out,";
-
+            exercises += "WaveOut ";
+            document.getElementById("myResults").innerHTML = exercises;
         }
-        function postIt() {
-          window.open("/newPlan?pid={{pid}}&activities=" + exercises, "_self");
+        function addWaveIn() {
+            exercises += "WaveIn ";
+            document.getElementById("myResults").innerHTML = exercises;
         }
-        $(document).ready(Main);
-  </script>
-  </div>
-  </div>
-  <br><br><br><br>
-  {{footer}}
+        function addRotateLeft() {
+            exercises += "RotateLeft ";
+            document.getElementById("myResults").innerHTML = exercises;
+        }
+        function addRotateRight() {
+            exercises += "RotateRight ";
+            document.getElementById("myResults").innerHTML = exercises;
+        }
 
-</body>
+        function read() {
+
+            console.log(exercises);
+            exercises = exercises.replace("Instructions: ", "").split(" ");
+            console.log(exercises);
+            document.getElementById("instructions").style.opacity=0;
+            document.getElementById("myResults").innerHTML = exercises;
+            var len = exercises.length
+            var i = 0;
+            // here exercise[i] is the array element
+            var myMyo = Myo.create();
+
+            myMyo.on('fist', function(edge){
+                        if(!edge || exercises[i] != 'Fist') return;
+                        var randomNumber = Math.floor(Math.random()*encouragement.length);
+                        document.getElementById("demo").innerHTML = encouragement[randomNumber]+"\n";
+                        myMyo.vibrate();
+                        i++;
+            });
+            myMyo.on('wave_out', function(edge){
+                        if(!edge || exercises[i] != 'WaveOut') return;
+                        var randomNumber = Math.floor(Math.random()*encouragement.length);
+                        document.getElementById("demo").innerHTML = encouragement[randomNumber]+"\n";
+                        myMyo.vibrate();
+                        i++;
+            });
+            myMyo.on('wave_in', function(edge){
+                        if(!edge || exercises[i] != 'WaveRight') return;
+                        var randomNumber = Math.floor(Math.random()*encouragement.length);
+                        document.getElementById("demo").innerHTML = encouragement[randomNumber]+"\n";
+                        myMyo.vibrate();
+                        i++;
+            });
+            myMyo.on('fingers_spread', function(edge){
+                        if(!edge || exercises[i] != 'FingersSpread') return;
+                        var randomNumber = Math.floor(Math.random()*encouragement.length);
+                        document.getElementById("demo").innerHTML = encouragement[randomNumber]+"\n";
+                        myMyo.vibrate();
+                        i++;
+            });
+            myMyo.on('gyroscope', function(data){
+                        if(data.x > 115 && exercises[i] == 'RotateLeft'){
+                        document.getElementById("demo").innerHTML = "Great Left Rotation!\n";
+                        myMyo.vibrate();
+                        i++;
+                        };
+            });
+            myMyo.on('gyroscope', function(data){
+                        if(data.x < -115 && exercises[i] == 'RotateRight'){
+                        document.getElementById("demo").innerHTML = "Great Right Rotation!\n";
+                        myMyo.vibrate();
+                        i++;
+                        };
+            });
+            if (i == len-1) {
+                document.getElementById("demo").innerHTML = "All Done!\n";
+                return;
+            }
+            
+        };
+    </script>
 </html>
