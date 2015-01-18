@@ -18,9 +18,8 @@ class ExerciseTrack(ndb.Model):
 class Result(ndb.Model):
   user = ndb.UserProperty(required=True)
   timestamp = ndb.DateTimeProperty(required=True)
-  ETID = ndb.StringProperty(required=True)
-  exResult = ndb.StringProperty(repeated=True)
-  #TODO: IMPLEMENT WITH LISTS -- exercise result list for each day
+  complete = ndb.StringProperty(repeated=True)
+  incomplete = ndb.StringProperty(repeated=True)
 
 class PTUser(ndb.Model):
   user = ndb.UserProperty(required=True)
@@ -110,4 +109,20 @@ class IntermHandler(webapp2.RequestHandler):
     template_values = {"header": renderedHeader, "footer":header.getFooter(), "planVals": exprog}
     template = main.jinja_environment.get_template('interm.html')
     self.response.out.write(template.render(template_values))
+
+class ResultRecorder(webapp2.RequestHandler):
+  def get(self):
+    query = PTUser.query().filter(PTUser.user == users.get_current_user())
+    currUser = query.fetch()[0]
+    renderedHeader = header.getHeader(currUser.PTType)
+    template_values = {"header": renderedHeader, "footer":header.getFooter()}
+
+    hits = self.request.get('complete')
+    misses = self.request.get('incomplete')
+
+    complete = hits.split(",")
+    incomplete = misses.split(",")
+
+    r = Result(user=users.get_current_user(), timestamp=datetime.datetime.now(), complete=complete, incomplete=incomplete)
+    r.put()
 

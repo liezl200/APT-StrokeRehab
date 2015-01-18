@@ -126,4 +126,5 @@ app = webapp2.WSGIApplication([
   ('/settings', SettingsHandler), #patient + therapist
   ('/settingsUpdate', SettingsUpdateHandler), #patient + therapist
   ('/newPlan', ex.IntermHandler), #intermediate page displaying new plan
+  ('/recordResult', ex.ResultRecorder), #records results after the patient completes the test
 ], debug=True)
