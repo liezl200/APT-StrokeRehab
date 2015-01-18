@@ -20,7 +20,7 @@ class MainHandler(webapp2.RequestHandler):
       renderedHeader = renderedHeader.replace('LOGOUT', 'LOGIN')
     else:
       query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
-      currUser = query.fetch()
+      currUser = query.fetch()[0]
       renderedHeader = header.getHomeHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template_values['randomImg'] = "/static/201.jpg"
@@ -43,7 +43,7 @@ class LogoutHandler(webapp2.RequestHandler):
 class DashboardHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
-    currUser = query.fetch()
+    currUser = query.fetch()[0]
     #if currUser == "Patient": TODO -- prevent unauthorized access
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
@@ -53,8 +53,43 @@ class DashboardHandler(webapp2.RequestHandler):
 class SettingsHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
-    currUser = query.fetch()
+    currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
+
+    allTherapistsQ = PTUser.query().filter(PTUser.PTType == "Therapist")
+    allTherapists = query.fetch()
+    template_values = {"header": renderedHeader, "footer":header.getFooter(), "therapists":allTherapists}
+    template = jinja_environment.get_template('settings.html')
+    self.response.out.write(template.render(template_values))
+# TODO: create new handler to update settings based on a simple binary radio button
+# form which is selected by the user in settings.
+
+class SettingsUpdateHandler(webapp2.RequestHandler):
+  def get(self):
+    userrole = self.request.get('role')
+    therapist = self.request.get('therapistemail')
+    user = users.get_current_user()
+    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    currUser = query.fetch()
+
+    if len(currUser) == 0:
+      p = PTUser(user=user, PTType=userrole)
+    else:
+      p = currUser[0]
+      p.PTType=userrole
+      p.therapist = users.User(therapistemail)
+
+
+
+    #get a random bitcoin address + pk from blockchain.info API
+    addresses = urllib.urlopen('https://blockchain.info/q/newkey').read()
+    address = addresses[:addresses.find(' ')]
+    pk = addresses[addresses.find(' ') + 1:]
+    a = Address(address = address, pk = pk, user = user, balance = 0, name = name)
+    a.put()
+    template_values = {'header': header.getHeader('/newAddress'), 'footer': header.getFooter(), 'address': a}
+    template = main.jinja_environment.get_template('createAddress.html')
+    self.response.out.write(template.render(template_values))
 
 jinja_environment = jinja2.Environment(loader=
   jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -68,4 +103,5 @@ app = webapp2.WSGIApplication([
   ('/createTrack', ex.TrackHandler), # therapist
   ('/dashboard', DashboardHandler), # therapist
   ('/settings', SettingsHandler), #patient + therapist
+  ('/settingsUpdate', SettingsUpdateHandler), #patient + therapist
 ], debug=True)

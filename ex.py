@@ -15,13 +15,13 @@ class ExerciseTrack(ndb.Model):
   pass
   #TODO: IMPLEMENT WITH LISTS -- exercise list
 
-class Results(ndb.Model):
+class Result(ndb.Model):
   user = ndb.UserProperty(required=True)
   timestamp = ndb.DateTimeProperty(required=True)
   ETID = ndb.StringProperty(required=True)
   #TODO: IMPLEMENT WITH LISTS -- exercise result list for each day
 
-class PTUsers(ndb.Model):
+class PTUser(ndb.Model):
   user = ndb.UserProperty(required=True)
   PTType = ndb.StringProperty(required=True)
   therapist = ndb.UserProperty()
@@ -29,7 +29,7 @@ class PTUsers(ndb.Model):
 class ExercisesHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
-    currUser = query.fetch()
+    currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = main.jinja_environment.get_template('exercises.html')
@@ -38,7 +38,7 @@ class ExercisesHandler(webapp2.RequestHandler):
 class ProgressHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
-    currUser = query.fetch()
+    currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = main.jinja_environment.get_template('progress.html')
@@ -50,7 +50,7 @@ jinja_environment = jinja2.Environment(loader=
 class TrackHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
-    currUser = query.fetch()
+    currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = main.jinja_environment.get_template('createTrack.html')
