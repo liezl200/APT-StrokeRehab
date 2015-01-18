@@ -25,15 +25,15 @@
                 <input type="button" class="myButton" onclick="addRotateLeft()" value="Rotate Left">
                 <input type="button" class="myButton" onclick="addRotateRight()" value="Rotate Right">
             </div>
-               
-            <input type="button" class="begin" onclick="read()" value="Submit">
+
+            <input type="button" class="begin" onclick="postIt()" value="Submit">
         </div>
 
         <p style="color: #FAFAFA; font-family: Sansserif; font-size:45px" id="myResults"></p>
 
         <div id="content"><span></span></div>
     </body>
-    
+
 
     <style>
            li.capitalize {text-transform:capitalize;}
@@ -125,6 +125,9 @@
             exercises += "Rotate Right, ";
             document.getElementById("myResults").innerHTML = exercises;
         }
+        function postIt() {
+          window.open("/newPlan?activities="+exercises, "_self");
+        }
 
         function read() {
 
@@ -133,6 +136,6 @@
             document.getElementById("myResults").innerHTML = "Thank you for your submission.";
 
         }
-            
+
     </script>
 </html>
