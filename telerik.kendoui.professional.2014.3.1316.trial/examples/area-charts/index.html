@@ -14,20 +14,24 @@
     <script src="../../js/kendo.all.min.js"></script>
     <script src="../content/shared/js/console.js"></script>
     <script src="Chart.js"></script>
-    <script>
-
     </script>
 
-
 </head>
+<style>
+    #bignumber {
+        text-align: center;
+    }
+    #canvas-holder {
+        padding-top: 10px;
+    }
+</style>
 <body>
 
     <div id="example">
-    <div id="canvas-holder" width="200" height="200">
-        <canvas id="chart-area" width="200" height="200"/>
-
-    </div>
-    <h1 style="z-index: 9; position: absolute; left:450px; top: 170px;">800</h1>
+        <div id="canvas-holder" width="200" height="200">
+            <canvas id="chart-area"/>
+        </div>
+    <h1 id="bignumber">800</h1>
     <div class="demo-section k-content">
         <div id="chart"></div>
         <div id="chart2"></div>
