@@ -9,15 +9,21 @@ handlers:
   static_files: static/\1
   upload: static/(.*\.ttf)
   mime_type: application/x-font-ttf
+
+- url: /static
+  static_dir: static
+
 - url: /
+  script: main.app
+- url: /theory
+  script: main.app
+- url: /colophon
   script: main.app
 - url: /Login
   script: main.app
 - url: /.*
   script: main.app
   login: required
-- url: /static
-  static_dir: static
 
 
 builtins:
