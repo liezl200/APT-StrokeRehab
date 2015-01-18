@@ -33,8 +33,8 @@
   <div class="container bs-docs-container">
   <div class="bs-docs-section">
     <form action="settingsUpdate" id="settingsUpdate">
-      <label><input type="button" class="radio" name="role" value="Patient" checked id="patientbox"><img src="http://cdn.flaticon.com/png/256/52489.png" width=100 /></label>
-      <label><input type="button" class="radio" name="role" value="Therapist" id="therapistbox"><img src="http://cdn.flaticon.com/png/256/44894.png" width=100 /></label>
+      <label><input type="radio" class="radio" name="role" value="Patient" checked id="patientbox">Patient</input><img src="http://cdn.flaticon.com/png/256/52489.png" width=100 /></label>
+      <label><input type="radio" class="radio" name="role" value="Therapist" id="therapistbox">Therapist</input><img src="http://cdn.flaticon.com/png/256/44894.png" width=100 /></label>
       <div id="therapistList">
         {% for th in therapists %}
           {% if currEmail != th.user.email()%}
