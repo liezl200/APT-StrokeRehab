@@ -14,12 +14,12 @@ import webapp2
 class MainHandler(webapp2.RequestHandler):
   def get(self):
     if(users.get_current_user() == None):
-      renderedHeader = header.getHeader("None")
-      renderedHeader = renderedHeader.replace('<li><a href="/settings">SETTINGS</a></li>', '')
+      renderedHeader = header.getHomeHeader("None")
+      #renderedHeader = renderedHeader.replace('<li><a href="/settings">SETTINGS</a></li>', '')
       renderedHeader = renderedHeader.replace('Logout', 'Login')
       renderedHeader = renderedHeader.replace('LOGOUT', 'LOGIN')
     else:
-      renderedHeader = header.getHeader(users.get_current_user().user_id())
+      renderedHeader = header.getHomeHeader(users.get_current_user().user_id())
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template_values['randomImg'] = "/static/201.jpg"
     template = jinja_environment.get_template('home.html')
