@@ -43,7 +43,7 @@ class ExercisesHandler(webapp2.RequestHandler):
 
     #TODO: parse and send program to javascript
 
-    template = main.jinja_environment.get_template('exercises.html')
+    template = main.jinja_environment.get_template('patientPage.html')
     self.response.out.write(template.render(template_values))
 
 class ProgressHandler(webapp2.RequestHandler):
@@ -85,7 +85,7 @@ class TrackHandler(webapp2.RequestHandler):
 
     patientID = self.request.get('pid')
     template_values["pid"] = patientID
-    template = main.jinja_environment.get_template('createTrack.html')
+    template = main.jinja_environment.get_template('therapistPage.html')
 
     self.response.out.write(template.render(template_values))
 

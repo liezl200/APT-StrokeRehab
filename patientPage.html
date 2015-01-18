@@ -1,0 +1,221 @@
+<html>
+        <head>
+            <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+            <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
+            <script src='./myo.js'></script>
+            <script src='./myo.experimental.js'></script>
+            <link href='http://fonts.googleapis.com/css?family=Poiret+One|Muli&effect=3d|emboss' rel='stylesheet' type='text/css'>
+            <title> Myo Hand Gesture Exercises </title>
+        </head>
+    <body>
+
+        <div id='log'></div>
+
+        <font color='GhostWhite'>
+            <h2 class="font-effect-3d" style="font-size:70px">Myo Hand Gesture Exercises</h2>
+            <h3 class="intro" id="instructions">Please repeat the following hand gestures as well as you can</h3>
+        </font>
+
+        <div style="text-align:center;">
+               
+            <input id="begin" type="button" class="begin" onclick="read()" value="Begin">
+        </div>
+
+        <p style="color: #FAFAFA; font-family: Sansserif; font-size:45px" id="myResults"></p>
+
+        <div id="content"><span></span></div>
+
+        <p  class="font-effect-emboss" style="font-size: 45px" id='demo'></p>
+        <div id="buttonWrap">
+            <button type="button" class="skip" onclick="skip()" id="#skipButton">Skip</button>
+        </div>
+        <video id="myVideoTag" width="800" height="600" autoplay="true">
+            <source src="./static/videos/IMG_0827.mp4"; type="video/mp4">
+                 Your browser does not support the video tag.
+        </video>
+    </body>
+    
+
+    <style>
+           li.capitalize {text-transform:capitalize;}
+           body {text-align: center;}
+           ul {list-style-type: none;}
+           body{background-image: url(./static/googlePlayBackground.jpg); background-size: 100%}
+           a:hover{color: #00FFF3;}
+
+           .intro {
+            color:#FAFAFA;
+            font-family:sans-serif;
+            font-size: 40px;
+            transition: transform 1s;
+           }
+
+            .myButton, .begin, .skip {
+                background: #428BCA;
+                color: #fff;
+                font-family: Sans-serif;
+                font-size: 20px;
+                height: 60px;
+                width: 150px;
+                line-height: 60px;
+                margin: 25px 25px;
+                text-align: center;
+                border: 0;
+                transition: all 0.3s ease 0s;
+                opacity: 1;
+                top: 50%;
+
+            }
+            .myButton:hover {
+                background: #3071A9
+            }
+            .begin:hover {
+                background: #66CC00;
+            }
+            .skip:hover {
+                background: #FF1919;
+            }
+            .myButton:active, .begin:active {
+                position:relative;
+                top:1px;
+            }
+
+        }
+    </style>
+
+    <script>
+        /*myMyo.on('fingers_spread', function(edge){
+            if(!edge) return;
+            alert('Hello Myo!');
+            myMyo.vibrate();
+        });
+
+        myMyo.on('fist', function(edge){
+            //Edge is true if it's the start of the pose, false if it's the end of the pose
+            if(edge){
+                enemies.crush();
+            }
+        });
+
+        myMyo.on('gyroscope', function(data){
+            if(data.x > 100){
+                alert('Woah now!')
+            }
+        });*/
+        var complete = "";
+        var incomplete = "";
+        //1 = fist, 2 = fingers, 3 = wave out, 4 = wave in, 5 = rotate left, 6 = rotate right
+
+        var myMyo = Myo.create();
+        alert("Welcome!");
+        myMyo.setLockingPolicy("none");
+        var encouragement = ["Awesome Job!", "Solid!","Keep It Up!", "Way to Go!", "Perfect!"];
+        var exercises = ["Wave Out ", "Rotate Right ", "Fist ", ""];
+        var i = 0;
+
+        function read() {
+            
+            document.getElementById("begin").style.opacity=0;
+            document.getElementById("instructions").style.opacity=0;
+
+            var len = exercises.length
+            document.getElementById("myResults").innerHTML = exercises[i];
+            
+            // here exercise[i] is the array element
+            var myMyo = Myo.create();
+
+            document.getElementById("myVideoTag").style.visibility="hidden";
+
+            myMyo.on('fist', function(edge){
+                        if(!edge || exercises[i].trim() != 'Fist') return;
+                        complete += "1,";
+                        var randomNumber = Math.floor(Math.random()*encouragement.length);
+                        document.getElementById("demo").innerHTML = encouragement[randomNumber]+"\n";
+                        myMyo.vibrate();
+                        i++;
+                        document.getElementById("myResults").innerHTML = exercises[i];
+            });
+            myMyo.on('wave_out', function(edge){
+                        if(!edge || exercises[i].trim() != 'Wave Out') return;
+                        complete += "3,";
+                        var randomNumber = Math.floor(Math.random()*encouragement.length);
+                        document.getElementById("demo").innerHTML = encouragement[randomNumber]+"\n";
+                        myMyo.vibrate();
+                        i++;
+                        document.getElementById("myResults").innerHTML = exercises[i];
+            });
+            myMyo.on('wave_in', function(edge){
+                        if(!edge || exercises[i].trim() != 'Wave Right') return;
+                        complete += "4,";
+                        var randomNumber = Math.floor(Math.random()*encouragement.length);
+                        document.getElementById("demo").innerHTML = encouragement[randomNumber]+"\n";
+                        myMyo.vibrate();
+                        i++;
+                        document.getElementById("myResults").innerHTML = exercises[i];
+            });
+            myMyo.on('fingers_spread', function(edge){
+                        if(!edge || exercises[i].trim() != 'Fingers Spread') return;
+                        complete += "2,";
+                        var randomNumber = Math.floor(Math.random()*encouragement.length);
+                        document.getElementById("demo").innerHTML = encouragement[randomNumber]+"\n";
+                        myMyo.vibrate();
+                        i++;
+                        document.getElementById("myResults").innerHTML = exercises[i];
+            });
+            myMyo.on('gyroscope', function(data){
+                        if(data.x > 115 && exercises[i].trim() == 'Rotate Left'){
+                        complete += "5,";
+                        document.getElementById("demo").innerHTML = "Great Left Rotation!\n";
+                        myMyo.vibrate();
+                        i++;
+                        document.getElementById("myResults").innerHTML = exercises[i];
+                        };
+            });
+            myMyo.on('gyroscope', function(data){
+                        if(data.x < -100 && exercises[i].trim() == 'Rotate Right'){
+                        complete += "6,";
+                        document.getElementById("demo").innerHTML = "Great Right Rotation!\n";
+                        myMyo.vibrate();
+                        i++;
+                        document.getElementById("myResults").innerHTML = exercises[i];
+                        };
+            });
+            
+            if (i >= len-1) {
+                document.getElementById("demo").innerHTML = "All Done!\n";
+                $("#skipButton").remove();
+                $("#buttonWrap").append('<button type="button" class="finish" onclick="finish()" id="#finish">Finish</button>');
+                return;
+            }
+            
+        };
+        function skip() {
+            var action;
+            if(exercises[i].trim() == "Fist"){
+                  action = "1";
+              }
+            else if(exercises[i].trim() == "Finger Spread"){
+                  action = "2";
+              }
+            else if(exercises[i].trim() == "Wave Out"){
+              }
+            else if(exercises[i].trim() == "Wave In"){
+                  action = "4";
+              }
+            else if(exercises[i].trim() == "Rotate Left"){
+                  action = "5";
+              }
+            else if(exercises[i].trim() == "Rotate Right"){
+                  action = "6";
+              }
+            console.log(action);
+            incomplete += action;
+            i++;
+            document.getElementById("myResults").innerHTML = exercises[i];
+            document.getElementById("demo").innerHTML = "";
+        };
+        function finish(){
+            window.open("/recordResult?complete=" + complete + "&incomplete=" + incomplete, "_self");
+        }
+    </script>
+</html>
