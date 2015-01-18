@@ -1,26 +1,338 @@
 <html>
 <head>
 
-  <title>Relay</title>
+  <title>Patient Treatment Summary</title>
   <link rel="icon" type="image/png" href="static/favicon.png"/>
   <link rel="stylesheet" href="/static/bootstrap.min.css">
   <link rel="stylesheet" href="/static/sitestyle.css">
   <script src="/static/jquery-1.11.1.min.js"></script>
-  <script src="/static/Chart.js"></script>
-
+  <link href="/static/content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="/static/styles/kendo.common.min.css" rel="stylesheet">
+    <link href="/static/styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="/static/styles/kendo.default.min.css" rel="stylesheet">
+    <link href="/static/styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="/static/styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <script src="/static/js/angular.min.js"></script>
+    <script src="/static/js/kendo.all.min.js"></script>
+    <script src="/static/content/shared/js/console.js"></script>
+    <script src="/static/Chart.js"></script>
 </head>
+<!--
+    {% if num_patients > 0 %}
+      {% for p in patients %}
+      <h1>{{p.user.email()}}</h1>
+      <a href="/progress?pid={{p.user.user_id()}}">View Progress</a><br>
+      <a href="/createTrack?pid={{p.user.user_id()}}">Create New Exercise Plan</a>
+      {% endfor %}
+    {% endif %}
+-->
+{{header}}
+  <style>
+    #bignumber {
+        text-align: center;
+    }
+    #canvas-holder {
+        padding-top: 50px;
+    }
+}
+}
+</style>
 <body>
-  {{header}}
 
-  <div class="container bs-docs-container">
-  <div class="bs-docs-section">
-  </div>
-  </div>
-  <br><br><br><br>
-  {{footer}}
+    <div id="example">
+        <div id="canvas-holder" width="200" height="200">
+            <canvas id="chart-area"/>
+        </div>
+    <h1 id="bignumber">800 total exercises</h1>
+    <div class="demo-section k-content">
+        <div id="chart"></div>
+        <div id="chart2"></div>
+        <div id="chart3"></div>
+        <div id="chart4"></div>
+    </div>
+    <script>
+        var doughnutData = [
+                {
+                    value: 300,
+                    color:"#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "Skipped"
+                },
+                {
+                    value: 500,
+                    color: "#46BFBD",
+                    highlight: "#5AD3D1",
+                    label: "Succeeded"
+                }
+
+            ];
+
+            window.onload = function(){
+                var ctx = document.getElementById("chart-area").getContext("2d");
+                window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
+            };
+
+        //Exercise 1
+        function createChart() {
+            //"succeeded1" is a list of number of times patient succeeded
+            //in given time frame - each number indicates one day
+            var succeeded1 = [];
+            // {% for number in succeeded1 %}
+            //     succeeded1.push(number);
+            // {% endfor %}
+
+            // //"attempted1" is a list of number of times patient attempted
+            // //in given time frame - each number indicates one day
+            // var attempted1 = [];
+            // {% for number in attempted1 %}
+            //     attempted1.push(number);
+            // {% endfor %}
+
+            $("#chart").kendoChart({
+                title: {
+                    text: "Patient Treatment Summary"
+                },
+                legend: {
+                    position: "bottom"
+                },
+                seriesDefaults: {
+                    type: "area",
+                    area: {
+                        line: {
+                            style: "smooth"
+                        }
+                    }
+                },
+                series: [{
+                    name: "Succeeded",
+                    data: [0, 1, 2, 2, 5, 4, 5, 7, 8, 12]
+                },
+                {
+                    name: "Attempted",
+                    data: [5, 5, 5, 5, 5, 6, 5, 10, 10, 10]
+                }],
+                valueAxis: {
+                    labels: {
+                        format: "{0}"
+                    },
+                    line: {
+                        visible: false
+                    },
+                    axisCrossingValue: -10
+                },
+                categoryAxis: {
+                    categories: ["Jan 9", "Jan 10", "Jan 11", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 17", "Jan 18"],
+                    majorGridLines: {
+                        visible: false
+                    }
+                },
+                tooltip: {
+                    visible: true,
+                    format: "{0}",
+                    template: "#= series.name #: #= value #"
+                }
+            });
+        }
+
+        function createChart2() {
+            //"succeeded2" is a list of number of times patient succeeded
+            //in given time frame - each number indicates one day
+            var succeeded2 = [];
+            // {% for number in succeeded2 %}
+            //     succeeded2.push(number);
+            // {% endfor %}
+
+            // //"attempted2" is a list of number of times patient attempted
+            // //in given time frame - each number indicates one day
+            // var attempted2 = [];
+            // {% for number in attempted2 %}
+            //     attempted2.push(number);
+            // {% endfor %}
+            $("#chart2").kendoChart({
+                title: {
+                    text: "Patient Treatment Summary"
+                },
+                legend: {
+                    position: "bottom"
+                },
+                seriesDefaults: {
+                    type: "area",
+                    area: {
+                        line: {
+                            style: "smooth"
+                        }
+                    }
+                },
+                series: [{
+                    name: "Succeeded",
+                    data: [0, 1, 2, 2, 5, 4, 5, 7, 8, 12]
+                },
+                {
+                    name: "Attempted",
+                    data: [5, 5, 5, 5, 5, 6, 5, 10, 10, 10]
+                }],
+                valueAxis: {
+                    labels: {
+                        format: "{0}"
+                    },
+                    line: {
+                        visible: false
+                    },
+                    axisCrossingValue: -10
+                },
+                categoryAxis: {
+                    categories: ["Jan 9", "Jan 10", "Jan 11", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 17", "Jan 18"],
+                    majorGridLines: {
+                        visible: false
+                    }
+                },
+                tooltip: {
+                    visible: true,
+                    format: "{0}",
+                    template: "#= series.name #: #= value #"
+                }
+            });
+        }
+
+        function createChart3() {
+            //"succeeded3" is a list of number of times patient succeeded
+            //in given time frame - each number indicates one day
+            var succeeded3 = [];
+            // {% for number in succeeded1 %}
+            //     succeeded3.push(number);
+            // {% endfor %}
+
+            // //"attempted3" is a list of number of times patient attempted
+            // //in given time frame - each number indicates one day
+            // var attempted3 = [];
+            // {% for number in attempted3 %}
+            //     attempted3.push(number);
+            // {% endfor %}
+            $("#chart3").kendoChart({
+                title: {
+                    text: "Patient Treatment Summary"
+                },
+                legend: {
+                    position: "bottom"
+                },
+                seriesDefaults: {
+                    type: "area",
+                    area: {
+                        line: {
+                            style: "smooth"
+                        }
+                    }
+                },
+                series: [{
+                    name: "Succeeded",
+                    data: [0, 1, 2, 2, 5, 4, 5, 7, 8, 12]
+                },
+                {
+                    name: "Attempted",
+                    data: [5, 5, 5, 5, 5, 6, 5, 10, 10, 10]
+                }],
+                valueAxis: {
+                    labels: {
+                        format: "{0}"
+                    },
+                    line: {
+                        visible: false
+                    },
+                    axisCrossingValue: -10
+                },
+                categoryAxis: {
+                    categories: ["Jan 9", "Jan 10", "Jan 11", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 17", "Jan 18"],
+                    majorGridLines: {
+                        visible: false
+                    }
+                },
+                tooltip: {
+                    visible: true,
+                    format: "{0}",
+                    template: "#= series.name #: #= value #"
+                }
+            });
+        }
+
+
+        function createChart4() {
+            //"succeeded4" is a list of number of times patient succeeded
+            //in given time frame - each number indicates one day
+            var succeeded4 = [];
+            // {% for number in succeeded4 %}
+            //     succeeded4.push(number);
+            // {% endfor %}
+
+            // //"attempted1" is a list of number of times patient attempted
+            // //in given time frame - each number indicates one day
+            // var attempted4 = [];
+            // {% for number in attempted4 %}
+            //     attempted4.push(number);
+            // {% endfor %}
+            $("#chart4").kendoChart({
+                title: {
+                    text: "Patient Treatment Summary"
+                },
+                legend: {
+                    position: "bottom"
+                },
+                seriesDefaults: {
+                    type: "area",
+                    area: {
+                        line: {
+                            style: "smooth"
+                        }
+                    }
+                },
+                series: [{
+                    name: "Succeeded",
+                    data: [0, 1, 2, 2, 5, 4, 5, 7, 8, 12]
+                },
+                {
+                    name: "Attempted",
+                    data: [5, 5, 5, 5, 5, 6, 5, 10, 10, 10]
+                }],
+                valueAxis: {
+                    labels: {
+                        format: "{0}"
+                    },
+                    line: {
+                        visible: false
+                    },
+                    axisCrossingValue: -10
+                },
+                categoryAxis: {
+                    categories: ["Jan 9", "Jan 10", "Jan 11", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 17", "Jan 18"],
+                    majorGridLines: {
+                        visible: false
+                    }
+                },
+                tooltip: {
+                    visible: true,
+                    format: "{0}",
+                    template: "#= series.name #: #= value #"
+                }
+            });
+        }
+
+        $(document).ready(createChart);
+        $(document).ready(createChart2);
+        $(document).ready(createChart3);
+        $(document).ready(createChart4);
+        $(document).bind("kendo:skinChange", createChart);
+    </script>
+    <style type="text/css">
+        #chart {
+            background: center no-repeat url('/content/shared/styles/world-map.png');
+        }
+        #canvas-holder {
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</div>
 
 </body>
-<script>
-
-</script>
+  {{footer}}
 </html>

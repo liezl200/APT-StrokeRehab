@@ -18,12 +18,12 @@ header = '''
         <li>
             <a class="page-scroll" href="/#about">ABOUT</a>
         </li>
-        <li>
-            <a class="page-scroll" href="/#contact">CONTACT</a>
-        </li>
         <<PATIENT/THERAPIST>>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+              <li>
+          <a href="/exercises">EXERCISES</a>
+      </li>
         <li><a href="/settings">SETTINGS</a></li>
         <li><a href="/Logout">LOGOUT</a></li>
       </ul>
@@ -62,6 +62,9 @@ homeHeader = '''
                 </li>
                 <li>
                     <a class="page-scroll" href="#about">ABOUT</a>
+                </li>
+                <li>
+                    <a href="/exercises">EXERCISES</a>
                 </li>
               <li><a href="/settings">SETTINGS</a></li>
               <li><a href="/Logout">LOGOUT</a></li>

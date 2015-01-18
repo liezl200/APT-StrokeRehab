@@ -35,7 +35,7 @@
                 <input type="button" class="myButton" onclick="addRotateRight()" value="Rotate Right">
             </div>
                
-            <input type="button" class="begin" onclick="read()" value="Begin">
+            <input type="button" class="begin" onclick="postIt()" value="Begin">
         </div>
 
         <p style="color: #FAFAFA; font-family: Sansserif; font-size:45px" id="myResults"></p>
@@ -139,6 +139,10 @@
         function addRotateRight() {
             exercises += "RotateRight ";
             document.getElementById("myResults").innerHTML = exercises;
+        }
+
+        function postIt() {
+          window.open("/newPlan?activities="+exercises, "_self");
         }
 
         function read() {
