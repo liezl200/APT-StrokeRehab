@@ -43,8 +43,10 @@ class ProgressHandler(webapp2.RequestHandler):
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
 
     patientID = self.request.get('pid')
-    template_values["pid"] = pid
-
+    if not patientID:
+      patientID = users.get_current_user().user_id()
+    template_values["pid"] = patientID
+    logging.info(patientID)
     #TODO: load data specific for this patient ID from the results datastore model
 
     template = main.jinja_environment.get_template('progress.html')
