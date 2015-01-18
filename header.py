@@ -11,7 +11,7 @@ header = '''
               <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand page-scroll" href="/">
-          Automated Physical Therapy</a>
+          Relay</a>
       </div>
       <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav" >
