@@ -46,7 +46,7 @@ homeHeader = '''
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand page-scroll" href="#page-top">
-            Automatic Physical Therapy</a>
+            Relay</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
