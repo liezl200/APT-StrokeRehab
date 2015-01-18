@@ -15,6 +15,12 @@ header = '''
       </div>
       <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav" >
+        <li>
+            <a class="page-scroll" href="/#about">ABOUT</a>
+        </li>
+        <li>
+            <a class="page-scroll" href="/#contact">CONTACT</a>
+        </li>
         <<PATIENT/THERAPIST>>
       </ul>
       <ul class="nav navbar-nav navbar-right">
