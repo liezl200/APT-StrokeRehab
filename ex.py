@@ -56,14 +56,16 @@ class ProgressHandler(webapp2.RequestHandler):
 
     patientID = self.request.get('pid')
     if not patientID:
-      patientID = users.get_current_user().user_id()
+      patientUser = users.get_current_user()
+    else:
+      patientUser = users.User(_user_id = 'validuserid')
     template_values["pid"] = patientID
     logging.info(patientID)
 
     #TODO: load data specific for this patient ID from the results datastore model
-    pQuery = Result.query().filter(Result.user.user_id() == patientID)
-    pQuery.order(ExerciseTrack.timestamp)
-    patientResults = pQuery.fetch()
+    rQuery = Result.query().filter(Result.user == patientUser)
+    rQuery.order(ExerciseTrack.timestamp)
+    patientResults = rQuery.fetch()
     if not patientResults:
       template_values['results'] = []
     else:
