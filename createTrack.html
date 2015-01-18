@@ -11,8 +11,36 @@
 <body>
   {{header}}
 
+
   <div class="container bs-docs-container">
   <div class="bs-docs-section">
+    <div style="text-align:center;">
+        <div>
+            <input type="button" class="myButton" onclick="addFist()" value="Fist">
+            <input type="button" class="myButton" onclick="addFingersSpread()" value="Fingers">
+            <input type="button" class="myButton" onclick="addWaveOut()" value="Wave">
+        </div>
+        <input type="button" class="begin" onclick="postIt()" value="Begin" color="green">
+
+    </div>
+
+    <script type="text/javascript">
+      var exercises = "";
+
+        function addFist() {
+            exercises += "fist,";
+            console.log("Fist.")
+        }
+        function addFingersSpread() {
+            exercises += "fingers_spread,";
+        }
+        function addWaveOut() {
+            exercises += "wave_out,";
+        }
+        function postIt() {
+          window.open("/newPlan?activities=" + exercises, "_self");
+        }
+  </script>
   </div>
   </div>
   <br><br><br><br>
