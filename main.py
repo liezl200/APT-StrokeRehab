@@ -5,6 +5,7 @@ import os
 import logging
 import random
 import header
+from ex import *
 import ex
 from google.appengine.ext import ndb
 from google.appengine.api import users
@@ -19,7 +20,7 @@ class MainHandler(webapp2.RequestHandler):
       renderedHeader = renderedHeader.replace('Logout', 'Login')
       renderedHeader = renderedHeader.replace('LOGOUT', 'LOGIN')
     else:
-      query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+      query = PTUser.query().filter(PTUser.user == users.get_current_user())
       currUser = query.fetch()[0]
       renderedHeader = header.getHomeHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
@@ -42,7 +43,7 @@ class LogoutHandler(webapp2.RequestHandler):
 # Therapist-use only
 class DashboardHandler(webapp2.RequestHandler):
   def get(self):
-    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.user == users.get_current_user())
     currUser = query.fetch()[0]
     #if currUser == "Patient": TODO -- prevent unauthorized access
     renderedHeader = header.getHeader(currUser.PTType)
@@ -52,7 +53,7 @@ class DashboardHandler(webapp2.RequestHandler):
 
 class SettingsHandler(webapp2.RequestHandler):
   def get(self):
-    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.user == users.get_current_user())
     currUser = query.fetch()[0]
     renderedHeader = header.getHeader(currUser.PTType)
 
@@ -69,7 +70,7 @@ class SettingsUpdateHandler(webapp2.RequestHandler):
     userrole = self.request.get('role')
     therapist = self.request.get('therapistemail')
     user = users.get_current_user()
-    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.user == users.get_current_user())
     currUser = query.fetch()
 
     if len(currUser) == 0:
