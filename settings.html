@@ -21,23 +21,28 @@
   $(document).ready(Main);
 </script>
 </head>
+<style>
+  body {
+    text-align: center;
+  }
+</style>
 <body>
   {{header}}
   <br><br><br><br>
-  <h1>Welcome, {{currEmail}}</h1>
+  <h1 id="welcome">Welcome, {{currEmail}}</h1>
   <div class="container bs-docs-container">
   <div class="bs-docs-section">
     <form action="settingsUpdate" id="settingsUpdate">
-      <input type="radio" name="role" value="Patient" checked id="patientbox">Patient<br>
-      <input type="radio" name="role" value="Therapist" id="therapistbox">Therapist<br>
+      <label><input type="button" class="radio" name="role" value="Patient" checked id="patientbox"><img src="http://cdn.flaticon.com/png/256/52489.png" width=100 /></label>
+      <label><input type="button" class="radio" name="role" value="Therapist" id="therapistbox"><img src="http://cdn.flaticon.com/png/256/44894.png" width=100 /></label>
       <div id="therapistList">
         {% for th in therapists %}
           {% if currEmail != th.user.email()%}
-            <input type="radio" name="therapist" value="{{th.user.email()}}">{{th.user.email()}}<br>
+            <input type="radio" class="radio" name="therapist" value="{{th.user.email()}}">{{th.user.email()}}<br>
           {% endif %}
         {% endfor %}
       </div>
-      <input type="submit" id="submitUpdate" value="Update">
+      <input type="submit" class="btn btn-default" id="submitUpdate" value="Update">
     </form>
   </div>
   </div>

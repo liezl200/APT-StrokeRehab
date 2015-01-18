@@ -16,11 +16,14 @@
   <div class="bs-docs-section">
     <div style="text-align:center;">
         <div>
-            <input type="button" class="myButton" onclick="addFist()" value="Fist">
-            <input type="button" class="myButton" onclick="addFingersSpread()" value="Fingers">
-            <input type="button" class="myButton" onclick="addWaveOut()" value="Wave">
+            <input type="button" class="btn btn-default" onclick="addFist()" value="Fist">
+            <input type="button" class="btn btn-default" onclick="addFingersSpread()" value="Fingers">
+            <input type="button" class="btn btn-default" onclick="addWaveOut()" value="Wave">
         </div>
-        <input type="button" class="begin" onclick="postIt()" value="Begin" color="green">
+        <br>
+        <input type="button" class="btn btn-default" onclick="postIt()" value="Begin" color="green">
+
+
 
     </div>
 
@@ -29,17 +32,20 @@
 
         function addFist() {
             exercises += "fist,";
-            console.log("Fist.")
+
         }
         function addFingersSpread() {
             exercises += "fingers_spread,";
+
         }
         function addWaveOut() {
             exercises += "wave_out,";
+
         }
         function postIt() {
           window.open("/newPlan?pid={{pid}}&activities=" + exercises, "_self");
         }
+        $(document).ready(Main);
   </script>
   </div>
   </div>
