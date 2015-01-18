@@ -18,6 +18,7 @@ header = '''
         <<PATIENT/THERAPIST>>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="/settings">SETTINGS</a></li>
         <li><a href="/Logout">LOGOUT</a></li>
       </ul>
     </div>
@@ -57,6 +58,7 @@ homeHeader = '''
                 <<PATIENT/THERAPIST>>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="/settings">SETTINGS</a></li>
               <li><a href="/Logout">LOGOUT</a></li>
             </ul>
         </div>

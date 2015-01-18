@@ -5,26 +5,50 @@ from google.appengine.api import users
 import datetime
 import urllib
 
+class Movement(ndb.Model):
+  name = ndb.StringProperty(required=True)
+  pose = ndb.StringProperty(required=True)
+
+class ExerciseTrack(ndb.Model):
+  timestamp = ndb.DateTimeProperty(required=True)
+  ETID = ndb.StringProperty(required=True)
+  pass
+  #TODO: IMPLEMENT WITH LISTS -- exercise list
+
+class Results(ndb.Model):
+  user = ndb.UserProperty(required=True)
+  timestamp = ndb.DateTimeProperty(required=True)
+  ETID = ndb.StringProperty(required=True)
+  #TODO: IMPLEMENT WITH LISTS -- exercise result list for each day
+
+class PTUsers(ndb.Model):
+  user = ndb.UserProperty(required=True)
+  PTType = ndb.StringProperty(required=True)
+  therapist = ndb.UserProperty()
+
 class ExercisesHandler(webapp2.RequestHandler):
   def get(self):
-    renderedHeader = header.getHeader(users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    currUser = query.fetch()
+    renderedHeader = header.getHeader(currUser.type)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
-    template = jinja_environment.get_template('exercises.html')
+    template = main.jinja_environment.get_template('exercises.html')
     self.response.out.write(template.render(template_values))
-
-jinja_environment = jinja2.Environment(loader=
-  jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 class ProgressHandler(webapp2.RequestHandler):
   def get(self):
-    renderedHeader = header.getHeader(users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    currUser = query.fetch()
+    renderedHeader = header.getHeader(currUser.type)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
-    template = jinja_environment.get_template('progress.html')
+    template = main.jinja_environment.get_template('progress.html')
     self.response.out.write(template.render(template_values))
 
 class TrackHandler(webapp2.RequestHandler):
   def get(self):
-    renderedHeader = header.getHeader(users.get_current_user().user_id())
+    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    currUser = query.fetch()
+    renderedHeader = header.getHeader(currUser.type)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
-    template = jinja_environment.get_template('createTrack.html')
+    template = main.jinja_environment.get_template('createTrack.html')
     self.response.out.write(template.render(template_values))

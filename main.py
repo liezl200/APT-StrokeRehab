@@ -15,11 +15,13 @@ class MainHandler(webapp2.RequestHandler):
   def get(self):
     if(users.get_current_user() == None):
       renderedHeader = header.getHomeHeader("None")
-      #renderedHeader = renderedHeader.replace('<li><a href="/settings">SETTINGS</a></li>', '')
+      renderedHeader = renderedHeader.replace('<li><a href="/settings">SETTINGS</a></li>', '')
       renderedHeader = renderedHeader.replace('Logout', 'Login')
       renderedHeader = renderedHeader.replace('LOGOUT', 'LOGIN')
     else:
-      renderedHeader = header.getHomeHeader(users.get_current_user().user_id())
+      query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+      currUser = query.fetch()
+      renderedHeader = header.getHomeHeader(currUser.type)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template_values['randomImg'] = "/static/201.jpg"
     template = jinja_environment.get_template('home.html')
@@ -43,10 +45,16 @@ class DashboardHandler(webapp2.RequestHandler):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
     currUser = query.fetch()
     #if currUser == "Patient": TODO -- prevent unauthorized access
-    renderedHeader = header.getHeader(currUser == "Patient")
+    renderedHeader = header.getHeader(currUser.type)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = jinja_environment.get_template('dashboard.html')
     self.response.out.write(template.render(template_values))
+
+class SettingsHandler(webapp2.RequestHandler):
+  def get(self):
+    query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
+    currUser = query.fetch()
+    renderedHeader = header.getHeader(currUser.type)
 
 jinja_environment = jinja2.Environment(loader=
   jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -59,4 +67,5 @@ app = webapp2.WSGIApplication([
   ('/progress', ex.ProgressHandler), # patient + therapist (direct access through patient userID)
   ('/createTrack', ex.TrackHandler), # therapist
   ('/dashboard', DashboardHandler), # therapist
+  ('/settings', SettingsHandler), #patient + therapist
 ], debug=True)
