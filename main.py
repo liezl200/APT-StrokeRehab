@@ -79,16 +79,9 @@ class SettingsUpdateHandler(webapp2.RequestHandler):
       p.PTType=userrole
       p.therapist = users.User(therapistemail)
 
-
-
-    #get a random bitcoin address + pk from blockchain.info API
-    addresses = urllib.urlopen('https://blockchain.info/q/newkey').read()
-    address = addresses[:addresses.find(' ')]
-    pk = addresses[addresses.find(' ') + 1:]
-    a = Address(address = address, pk = pk, user = user, balance = 0, name = name)
-    a.put()
-    template_values = {'header': header.getHeader('/newAddress'), 'footer': header.getFooter(), 'address': a}
-    template = main.jinja_environment.get_template('createAddress.html')
+    p.put()
+    template_values = {'header': header.getHeader(userrole), 'footer': header.getFooter()}
+    template = main.jinja_environment.get_template('settings.html')
     self.response.out.write(template.render(template_values))
 
 jinja_environment = jinja2.Environment(loader=
