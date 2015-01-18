@@ -21,7 +21,7 @@ class MainHandler(webapp2.RequestHandler):
     else:
       query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
       currUser = query.fetch()
-      renderedHeader = header.getHomeHeader(currUser.type)
+      renderedHeader = header.getHomeHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template_values['randomImg'] = "/static/201.jpg"
     template = jinja_environment.get_template('home.html')
@@ -45,7 +45,7 @@ class DashboardHandler(webapp2.RequestHandler):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
     currUser = query.fetch()
     #if currUser == "Patient": TODO -- prevent unauthorized access
-    renderedHeader = header.getHeader(currUser.type)
+    renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = jinja_environment.get_template('dashboard.html')
     self.response.out.write(template.render(template_values))
@@ -54,7 +54,7 @@ class SettingsHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
     currUser = query.fetch()
-    renderedHeader = header.getHeader(currUser.type)
+    renderedHeader = header.getHeader(currUser.PTType)
 
 jinja_environment = jinja2.Environment(loader=
   jinja2.FileSystemLoader(os.path.dirname(__file__)))

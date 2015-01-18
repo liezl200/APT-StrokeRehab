@@ -30,7 +30,7 @@ class ExercisesHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
     currUser = query.fetch()
-    renderedHeader = header.getHeader(currUser.type)
+    renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = main.jinja_environment.get_template('exercises.html')
     self.response.out.write(template.render(template_values))
@@ -39,7 +39,7 @@ class ProgressHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
     currUser = query.fetch()
-    renderedHeader = header.getHeader(currUser.type)
+    renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = main.jinja_environment.get_template('progress.html')
     self.response.out.write(template.render(template_values))
@@ -48,7 +48,7 @@ class TrackHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.userID == users.get_current_user().user_id())
     currUser = query.fetch()
-    renderedHeader = header.getHeader(currUser.type)
+    renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = main.jinja_environment.get_template('createTrack.html')
     self.response.out.write(template.render(template_values))
