@@ -19,6 +19,7 @@ class Result(ndb.Model):
   user = ndb.UserProperty(required=True)
   timestamp = ndb.DateTimeProperty(required=True)
   ETID = ndb.StringProperty(required=True)
+  exResult = ndb.StringProperty(repeated=True)
   #TODO: IMPLEMENT WITH LISTS -- exercise result list for each day
 
 class PTUser(ndb.Model):
@@ -35,11 +36,11 @@ class ExercisesHandler(webapp2.RequestHandler):
 
     etQuery = ExerciseTrack.query().filter(currUser.user == ExerciseTrack.user)
     etQuery.order(ExerciseTrack.timestamp)
-    program = etQuery.fetch()
-    if not program:
+    track = etQuery.fetch()
+    if not track:
       template_values['numProgs'] = 0
     else:
-      template_values['program'] = program[0].exProgram
+      template_values['program'] = track[0].exProgram
 
     #TODO: parse and send program to javascript
 
@@ -60,6 +61,13 @@ class ProgressHandler(webapp2.RequestHandler):
     logging.info(patientID)
 
     #TODO: load data specific for this patient ID from the results datastore model
+    pQuery = Result.query().filter(Result.user.user_id() == patientID)
+    pQuery.order(ExerciseTrack.timestamp)
+    patientResults = pQuery.fetch()
+    if not patientResults:
+      template_values['results'] = []
+    else:
+      template_values['results'] = patientResults
 
     template = main.jinja_environment.get_template('progress.html')
     self.response.out.write(template.render(template_values))
