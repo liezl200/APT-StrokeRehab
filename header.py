@@ -74,7 +74,7 @@ patientHeader = '''
 '''
 
 therapistHeader = '''
-<li><a href="/dashboard">DASHBOARD</a></li>
+<li><a href="/dashboard">THERAPIST DASHBOARD</a></li>
 '''
 
 footer = '''

@@ -21,8 +21,11 @@ class MainHandler(webapp2.RequestHandler):
       renderedHeader = renderedHeader.replace('LOGOUT', 'LOGIN')
     else:
       query = PTUser.query().filter(PTUser.user == users.get_current_user())
-      currUser = query.fetch()[0]
-      renderedHeader = header.getHomeHeader(currUser.PTType)
+      if len(query.fetch()) == 0:
+        renderedHeader = header.getHomeHeader("None")
+      else:
+        currUser = query.fetch()[0]
+        renderedHeader = header.getHomeHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template_values['randomImg'] = "/static/201.jpg"
     template = jinja_environment.get_template('home.html')
@@ -44,9 +47,12 @@ class LogoutHandler(webapp2.RequestHandler):
 class DashboardHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.user == users.get_current_user())
-    currUser = query.fetch()[0]
+    if len(query.fetch()) == 0:
+      renderedHeader = header.getHeader("None")
+    else:
+      currUser = query.fetch()[0]
+      renderedHeader = header.getHeader(currUser.PTType)
     #if currUser == "Patient": TODO -- prevent unauthorized access
-    renderedHeader = header.getHeader(currUser.PTType)
     template_values = {"header": renderedHeader, "footer":header.getFooter()}
     template = jinja_environment.get_template('dashboard.html')
     self.response.out.write(template.render(template_values))
@@ -54,12 +60,15 @@ class DashboardHandler(webapp2.RequestHandler):
 class SettingsHandler(webapp2.RequestHandler):
   def get(self):
     query = PTUser.query().filter(PTUser.user == users.get_current_user())
-    currUser = query.fetch()[0]
-    renderedHeader = header.getHeader(currUser.PTType)
+    if len(query.fetch()) == 0:
+      renderedHeader = header.getHeader("None")
+    else:
+      currUser = query.fetch()[0]
+      renderedHeader = header.getHeader(currUser.PTType)
 
     allTherapistsQ = PTUser.query().filter(PTUser.PTType == "Therapist")
     allTherapists = query.fetch()
-    template_values = {"header": renderedHeader, "footer":header.getFooter(), "therapists":allTherapists}
+    template_values = {"header": renderedHeader, "footer":header.getFooter(), "therapists":allTherapists, "currEmail":users.get_current_user().email}
     template = jinja_environment.get_template('settings.html')
     self.response.out.write(template.render(template_values))
 # TODO: create new handler to update settings based on a simple binary radio button
@@ -72,13 +81,15 @@ class SettingsUpdateHandler(webapp2.RequestHandler):
     user = users.get_current_user()
     query = PTUser.query().filter(PTUser.user == users.get_current_user())
     currUser = query.fetch()
-
+    therapistUser = None
+    if userrole == "Patient":
+      therapistUser = users.User(therapistemail)
     if len(currUser) == 0:
-      p = PTUser(user=user, PTType=userrole)
+      p = PTUser(user=user, PTType=userrole, therapist=therapistUser)
     else:
       p = currUser[0]
       p.PTType=userrole
-      p.therapist = users.User(therapistemail)
+      p.therapist = therapistUser
 
     p.put()
     template_values = {'header': header.getHeader(userrole), 'footer': header.getFooter()}

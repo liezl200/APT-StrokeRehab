@@ -1,0 +1,49 @@
+<html>
+<head>
+
+  <title>APT</title>
+  <link rel="icon" type="image/png" href="static/favicon.png"/>
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/sitestyle.css">
+  <script src="/static/jquery-1.11.1.min.js"></script>
+  <script src="/static/Chart.js"></script>
+  <script>
+  function unhideTherapists(){
+    $("#therapistList").show();
+  }
+  function hideTherapists(){
+    $("#therapistList").hide();
+  }
+  function Main(){
+
+    alert({{currEmail}});
+    $("#patientbox").click(unhideTherapists);
+    $("#therapistbox").click(hideTherapists);
+  }
+  $(document).ready(Main);
+</script>
+</head>
+<body>
+  {{header}}
+  <br><br><br><br>
+  <div class="container bs-docs-container">
+  <div class="bs-docs-section">
+    <form action="settingsUpdate" id="settingsUpdate">
+      <input type="radio" name="role" value="Patient" checked id="patientbox">Patient<br>
+      <input type="radio" name="role" value="Therapist" id="therapistbox">Therapist<br>
+      <div id="therapistList">
+        {% for th in allTherapists %}
+          {% if currEmail != th.email%}
+            <input type="radio" name="therapist" value="{{th.email}}"><br>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <input type="submit" id="submitUpdate" value="Update">
+    </form>
+  </div>
+  </div>
+  <br><br><br><br>
+  {{footer}}
+
+</body>
+</html>
