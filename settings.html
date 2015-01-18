@@ -15,8 +15,6 @@
     $("#therapistList").hide();
   }
   function Main(){
-
-    alert({{currEmail}});
     $("#patientbox").click(unhideTherapists);
     $("#therapistbox").click(hideTherapists);
   }
@@ -26,15 +24,16 @@
 <body>
   {{header}}
   <br><br><br><br>
+  <h1>Welcome, {{currEmail}}</h1>
   <div class="container bs-docs-container">
   <div class="bs-docs-section">
     <form action="settingsUpdate" id="settingsUpdate">
       <input type="radio" name="role" value="Patient" checked id="patientbox">Patient<br>
       <input type="radio" name="role" value="Therapist" id="therapistbox">Therapist<br>
       <div id="therapistList">
-        {% for th in allTherapists %}
-          {% if currEmail != th.email%}
-            <input type="radio" name="therapist" value="{{th.email}}"><br>
+        {% for th in therapists %}
+          {% if currEmail != th.user.email()%}
+            <input type="radio" name="therapist" value="{{th.user.email()}}">{{th.user.email()}}<br>
           {% endif %}
         {% endfor %}
       </div>

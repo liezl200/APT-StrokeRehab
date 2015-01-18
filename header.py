@@ -10,7 +10,7 @@ header = '''
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand page-scroll" href="#page-top">
+          <a class="navbar-brand page-scroll" href="/">
           Automatic Physical Therapy</a>
       </div>
       <div class="collapse navbar-collapse navbar-ex1-collapse">

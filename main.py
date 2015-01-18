@@ -67,8 +67,9 @@ class SettingsHandler(webapp2.RequestHandler):
       renderedHeader = header.getHeader(currUser.PTType)
 
     allTherapistsQ = PTUser.query().filter(PTUser.PTType == "Therapist")
-    allTherapists = query.fetch()
-    template_values = {"header": renderedHeader, "footer":header.getFooter(), "therapists":allTherapists, "currEmail":users.get_current_user().email}
+    allTherapists = allTherapistsQ.fetch()
+    logging.info(allTherapists)
+    template_values = {"header": renderedHeader, "footer":header.getFooter(), "therapists":allTherapists, "currEmail":users.get_current_user().email()}
     template = jinja_environment.get_template('settings.html')
     self.response.out.write(template.render(template_values))
 # TODO: create new handler to update settings based on a simple binary radio button
@@ -77,13 +78,15 @@ class SettingsHandler(webapp2.RequestHandler):
 class SettingsUpdateHandler(webapp2.RequestHandler):
   def get(self):
     userrole = self.request.get('role')
-    therapist = self.request.get('therapistemail')
+    logging.info(userrole)
+    logging.info(userrole == "Therapist")
+    therapistEmail = self.request.get('therapist')
     user = users.get_current_user()
     query = PTUser.query().filter(PTUser.user == users.get_current_user())
     currUser = query.fetch()
     therapistUser = None
     if userrole == "Patient":
-      therapistUser = users.User(therapistemail)
+      therapistUser = users.User(therapistEmail)
     if len(currUser) == 0:
       p = PTUser(user=user, PTType=userrole, therapist=therapistUser)
     else:
@@ -91,10 +94,12 @@ class SettingsUpdateHandler(webapp2.RequestHandler):
       p.PTType=userrole
       p.therapist = therapistUser
 
+    logging.info(p)
     p.put()
-    template_values = {'header': header.getHeader(userrole), 'footer': header.getFooter()}
-    template = main.jinja_environment.get_template('settings.html')
-    self.response.out.write(template.render(template_values))
+    self.redirect('/dashboard')
+    # template_values = {'header': header.getHeader(userrole), 'footer': header.getFooter()}
+    # template = main.jinja_environment.get_template('settings.html')
+    # self.response.out.write(template.render(template_values))
 
 jinja_environment = jinja2.Environment(loader=
   jinja2.FileSystemLoader(os.path.dirname(__file__)))
