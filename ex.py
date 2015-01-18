@@ -12,7 +12,7 @@ class Movement(ndb.Model):
 class ExerciseTrack(ndb.Model):
   timestamp = ndb.DateTimeProperty(required=True)
   user = ndb.UserProperty(required=True)
-  exProgram = nbd.StringProperty(repeated=True)
+  exProgram = ndb.StringProperty(repeated=True)
   #TODO: IMPLEMENT WITH LISTS -- exercise list
 
 class Result(ndb.Model):
